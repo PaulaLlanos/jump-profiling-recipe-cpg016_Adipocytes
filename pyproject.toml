@@ -21,6 +21,7 @@ patsy="0.5.6"
 statsmodels="0.14.2"
 copairs = {git = "https://github.com/johnarevalo/copairs.git"}
 urllib3 = "<2"
+plotly = "^5.24.1"
 
 [tool.poetry.group.dev.dependencies]
 jupyter = "^1.0.0"
