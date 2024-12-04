@@ -66,7 +66,7 @@ nix develop . --impure --extra-experimental-features nix-command --extra-experim
 df=pd.read_csv('/home/llanos/2024_10_07_cpg0014_Adipocytes/work/projects/cpg0014-jump-adipocyte/workspace/software/profiles/2022_11_28_Batch1/BR00135656/BR00135656_augmented.csv.gz',compression='gzip')
 
 
-find names in column name in dataframe
+Find names in column name in dataframe
 -----
 matching_columns = [col for col in df.columns if 'city' in col.lower()]
 print(matching_columns)
@@ -78,7 +78,7 @@ Plate
 Well
 Perturbation as Metadata_JCP2022,
 
-generating the dataset with cell count
+Generating the dataset with cell count
 ----
 Metadata_plate_map_name Metadata_broad_sample Metadata_Plate Metadata_Well  Metadata_Count_Cells
 
