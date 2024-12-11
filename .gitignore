@@ -1,5 +1,5 @@
 .snakemake
-*parquet
+#*parquet
 *h5ad
 *png
 *svg
@@ -11,7 +11,7 @@ __pycache__
 outputs
 inputs/source_*
 *plotly
-*csv
+#*csv
 *npz
 *pkl
 *pickle
