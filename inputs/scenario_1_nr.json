@@ -1,0 +1,16 @@
+{
+    "scenario": "scenario_1",
+    "pipeline": "profiles_var_mad_int_noiseremoval{stdev_cutoff}_featselect_harmony",
+    "keep_image_features": true,
+    "use_mad_negcon": true,
+    "sources": [
+        "source_6"
+    ],
+    "plate_types": [
+        "TARGET2"
+    ],
+    "batch_key": "Metadata_Batch",
+    "label_key": "Metadata_JCP2022",
+    "sphering_method": "ZCA-cor",
+    "sphering_n_opts": 25
+}

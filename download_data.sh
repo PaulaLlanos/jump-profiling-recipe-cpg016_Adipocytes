@@ -1,32 +1,14 @@
-#!/bin/bash
-
-if [ $# -ne 1 ]; then
-  echo "Error: Missing argument."
-  echo "Usage: $0 (orf|crispr|compound)"
-  exit 1
-fi
-
-# Validate argument value
-pert="$1"
-if [[ ! "$pert" =~ ^(orf|crispr|compound)$ ]]; then
-  echo "Error: Invalid argument. Please provide 'orf', 'crispr', or 'compound'."
-  echo "Usage: $0 (orf|crispr|compound)"
-  exit 1
-fi
-
-configfile="inputs/$pert.json"
 BASEPATH="s3://cellpainting-gallery/cpg0016-jump"
-
-readarray -t sources < <(jq -r '.sources[]' "$configfile")
+# To download all of the sources in the JUMP dataset
+# sources=`aws s3 ls --no-sign-request "$BASEPATH/" | awk '{print substr($2, 1, length($2)-1)}'`
+sources="source_1 source_2 source_3 source_5 source_6 source_7 source_8 source_9 source_10 source_11"
 
 mkdir -p inputs/metadata
-for source_id in "${sources[@]}";
+for source_id in $sources;
 do
-    # shellcheck disable=SC2086
-    aws s3 sync --no-sign-request "$BASEPATH/$source_id/workspace/profiles" inputs/${source_id}/workspace/profiles
+    aws s3 cp --recursive --no-sign-request "$BASEPATH/$source_id/workspace/profiles" inputs/$source_id/workspace/profiles
 done
 
 wget https://github.com/jump-cellpainting/datasets/blob/main/metadata/plate.csv.gz?raw=true -O inputs/metadata/plate.csv.gz
 wget https://github.com/jump-cellpainting/datasets/blob/main/metadata/well.csv.gz?raw=true -O inputs/metadata/well.csv.gz
-# shellcheck disable=SC2086
-wget https://github.com/jump-cellpainting/datasets/blob/main/metadata/$pert.csv.gz?raw=true -O inputs/metadata/${pert}.csv.gz
+wget https://github.com/jump-cellpainting/datasets/blob/main/metadata/compound.csv.gz?raw=true -O inputs/metadata/compound.csv.gz

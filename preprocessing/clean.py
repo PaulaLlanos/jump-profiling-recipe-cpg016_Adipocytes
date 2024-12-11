@@ -1,6 +1,8 @@
 import pandas as pd
 from .metadata import find_feat_cols
 import logging
+from pycytominer.operations.noise_removal import noise_removal as noise_removal_pyc
+
 
 # logging.basicConfig(format='%(levelname)s:%(asctime)s:%(name)s:%(message)s', level=logging.WARN)
 logger = logging.getLogger(__name__)
@@ -34,4 +36,12 @@ def outlier_removal(input_path: str, output_path: str):
     dframe = pd.read_parquet(input_path)
     dframe, _ = drop_outlier_feats(dframe, threshold=1e2)
     dframe = clip_features(dframe, threshold=1e2)
+    dframe.to_parquet(output_path)
+
+def noise_removal(input_path: str, label_key: str, stdev_cutoff: float, output_path: str):
+    """Remove noise"""
+    dframe = pd.read_parquet(input_path)
+    feat_cols = find_feat_cols(dframe.columns)
+    to_remove = noise_removal_pyc(dframe,label_key,feat_cols,noise_removal_stdev_cutoff=stdev_cutoff)
+    dframe.drop(columns=to_remove,inplace=True)
     dframe.to_parquet(output_path)

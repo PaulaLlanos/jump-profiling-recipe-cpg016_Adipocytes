@@ -142,7 +142,18 @@ rule correct_arm:
     run:
         correct.corrections.arm_correction(*input, *output, params.gene_expression_path)
 
-
+rule noiseremoval:
+    wildcard_constraints:
+        stdev_cutoff = r'\d+\.\d+'
+    input:
+        "outputs/{scenario}/{pipeline}.parquet",
+    output:
+        "outputs/{scenario}/{pipeline}_noiseremoval{stdev_cutoff}.parquet",
+    params:
+        label_key=config["label_key"],
+    run:
+        pp.clean.noise_removal(*input, params.label_key, float(wildcards.stdev_cutoff), *output)
+        
 rule featselect:
     input:
         "outputs/{scenario}/{pipeline}.parquet",
@@ -153,6 +164,13 @@ rule featselect:
     run:
         pp.select_features(*input, *output, *params)
 
+rule featselectnoiseremoval:
+    input:
+        "outputs/{scenario}/{pipeline}.parquet",
+    output:
+        "outputs/{scenario}/{pipeline}_featselectnoiseremoval.parquet",
+    run:
+        pp.feature_selection.test_feature_select_noise_removal(*input, *output)
 
 rule harmony:
     input:
